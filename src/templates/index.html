@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask AJAX Example - POST Request with jQuery and Popup</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1, h3 {
+            color: #0056b3;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 10px; /* 버튼 간 간격 추가 */
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        pre {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        .message-box {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+        }
+        .error-box {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* --- 팝업 스타일 --- */
+        .popup-overlay {
+            display: none; /* 초기에는 숨김 */
+            position: fixed; /* 화면 전체를 덮도록 고정 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* 반투명 검은 배경 */
+            z-index: 1000; /* 다른 요소 위에 표시 */
+            justify-content: center; /* 팝업 박스 수평 중앙 정렬 */
+            align-items: center; /* 팝업 박스 수직 중앙 정렬 */
+        }
+
+        .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative; /* 자식 요소의 position:absolute 기준 */
+            transform: scale(0.9); /* 초기 크기 (애니메이션 준비) */
+            opacity: 0; /* 초기 투명도 (애니메이션 준비) */
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* 애니메이션 효과 */
+        }
+
+        .popup-overlay.active .popup-content {
+            transform: scale(1); /* 활성화 시 원래 크기로 */
+            opacity: 1; /* 활성화 시 불투명하게 */
+        }
+
+        .popup-content h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .popup-content p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .popup-content .ok-button {
+            background-color: #28a745; /* 초록색 OK 버튼 */
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .popup-content .ok-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Job Data Interaction (jQuery & Popup)</h1>
+    <p>클릭하여 서버에 POST 요청을 보내고, 서버가 제공하는 JSON 데이터를 받아옵니다.</p>
+    <button id="requestButton">Request Job Data (POST)</button>
+    <button onclick="showPopup('알림', '작업이 성공적으로 완료되었습니다.');">Show Success Popup</button>
+    <button onclick="showPopup('오류 발생', '데이터 전송 중 문제가 발생했습니다.', true);">Show Error Popup</button>
+
+
+    <h3>서버 응답 데이터:</h3>
+    <pre id="responseData">서버 응답이 여기에 표시됩니다...</pre>
+    <div id="message" class="message-box"></div>
+
+    <div id="myPopupOverlay" class="popup-overlay">
+        <div class="popup-content">
+            <h2 id="popupTitle">팝업 제목</h2>
+            <p id="popupMessage">팝업 내용이 여기에 표시됩니다.</p>
+            <button class="ok-button" onclick="hidePopup()">OK</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // AJAX 통신 오류 표시 등록
+            ajax.showError = showErrorPopup;
+
+            // AJAX 요청 버튼 클릭 이벤트
+            $('#requestButton').on('click', function() { // 버튼 클릭 이벤트 리스너
+                ajax.post("/v1/api/request", {request: "job1"}, function(data){
+                    const responseDataElement = $('#responseData');
+                    const messageElement = $('#message');
+
+                    responseDataElement.text('데이터를 요청 중...');
+                    messageElement.removeClass('error-box').addClass('message-box').text('');
+
+                    // 요청이 성공했을 때 실행될 콜백 함수
+                    console.log('서버로부터 받은 응답 (jQuery Success):', data);
+                    responseDataElement.text(JSON.stringify(data, null, 2)); // 보기 좋게 포맷팅하여 표시
+                    messageElement.text(`서버 메시지: ${data.server_status || '메시지 없음'}`);
+                    messageElement.removeClass('error-box').addClass('message-box');
+                });
+            });
+        });
+
+        // --- 팝업 제어 함수 ---
+        /**
+         * 팝업을 표시하는 함수.
+         * @param {string} title - 팝업 제목.
+         * @param {string} message - 팝업 내용.
+         * @param {boolean} [isError=false] - 오류 팝업인 경우 true. (선택 사항)
+         */
+        function showErrorPopup(title, message) {
+            showPopup(title, message, true);
+        }
+        function showPopup(title, message, isError = false) {
+            const popupOverlay = $('#myPopupOverlay');
+            const popupContent = popupOverlay.find('.popup-content');
+            const popupTitle = $('#popupTitle');
+            const popupMessage = $('#popupMessage');
+            const okButton = popupContent.find('.ok-button');
+
+            popupTitle.text(title);
+
+            // 중요: 메시지 내의 '\n'을 '<br>' 태그로 변환
+            const formattedMessage = message.replace(/\n/g, '<br>');
+            popupMessage.html(formattedMessage); // innerHTML 사용
+
+            // 오류 팝업일 경우 버튼 색상 변경 (예시)
+            if (isError) {
+                okButton.css('background-color', '#dc3545'); // 빨간색
+                okButton.hover(
+                    function() { $(this).css('background-color', '#c82333'); },
+                    function() { $(this).css('background-color', '#dc3545'); }
+                );
+            } else {
+                okButton.css('background-color', '#28a745'); // 초록색 (기본)
+                okButton.hover(
+                    function() { $(this).css('background-color', '#218838'); },
+                    function() { $(this).css('background-color', '#28a745'); }
+                );
+            }
+
+            popupOverlay.css('display', 'flex'); // flex로 변경하여 중앙 정렬 활성화
+            // display:flex가 적용된 후, 잠시 후에 active 클래스 추가하여 transition 발생
+            setTimeout(() => {
+                popupOverlay.addClass('active');
+            }, 10); // 작은 지연 시간
+        }
+
+        /**
+         * 팝업을 숨기는 함수.
+         */
+        function hidePopup() {
+            const popupOverlay = $('#myPopupOverlay');
+            popupOverlay.removeClass('active');
+            // transition이 끝난 후 display:none 적용
+            popupOverlay.on('transitionend', function() {
+                if (!popupOverlay.hasClass('active')) {
+                    popupOverlay.css('display', 'none');
+                    popupOverlay.off('transitionend'); // 이벤트 리스너 제거 (중복 방지)
+                }
+            });
+        }
+    </script>
+</body>
+</html>

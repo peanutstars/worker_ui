@@ -1,0 +1,16 @@
+body {
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    padding-top: 50px;
+}
+
+h1 {
+    color: #333;
+}
+
+img {
+    max-width: 200px;
+    height: auto;
+    margin-top: 20px;
+}

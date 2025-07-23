@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반응형 대시보드</title>
+    <!-- Tailwind CSS CDN 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jQuery CDN 로드 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Google Fonts (Inter & Noto Sans KR) 로드 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 기본 폰트 설정 */
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            overscroll-behavior: none; /* 터치 스크롤 시 페이지 전체가 움직이는 현상 방지 */
+        }
+        /* 사이드바 축소 시 텍스트 숨김 */
+        .sidebar-collapsed .menu-text {
+            display: none;
+        }
+        /* 사이드바 축소 시 아이콘 가운데 정렬 */
+        .sidebar-collapsed .menu-item {
+            justify-content: center;
+        }
+        /* 스크롤바 디자인 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* 활성 메뉴 스타일 */
+        .menu-active {
+            background-color: #2563eb; /* bg-blue-600 */
+            color: white;
+        }
+        /* 비활성 메뉴 스타일 */
+        .menu-inactive {
+            color: #cbd5e1; /* text-slate-300 */
+        }
+        .menu-inactive:hover {
+            background-color: #334155; /* hover:bg-slate-700 */
+        }
+        /* 키패드 버튼 스타일 */
+        .keypad-btn {
+            @apply w-full h-14 bg-slate-200 rounded-lg text-2xl font-semibold text-slate-700 flex items-center justify-center transition-colors hover:bg-slate-300 active:bg-slate-400;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 overflow-hidden">
+
+    <div id="app" class="flex h-screen">
+        <!-- 좌측 사이드바 메뉴 -->
+        <aside id="sidebar" class="bg-slate-800 text-white transition-all duration-300 ease-in-out w-64 flex flex-col flex-shrink-0">
+            <div class="flex items-center justify-between p-4 border-b border-slate-700 h-16">
+                <h1 class="text-xl font-bold whitespace-nowrap menu-text">대시보드</h1>
+                <button id="sidebar-toggle" class="p-2 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500">
+                    <svg id="toggle-icon-collapse" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    <svg id="toggle-icon-expand" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+            <nav class="flex-1 mt-4">
+                <ul>
+                    <li class="px-4 py-2">
+                        <a href="#" id="menu-action" class="flex items-center p-2 text-base font-normal rounded-lg menu-item">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            <span class="ml-3 menu-text">Action</span>
+                        </a>
+                    </li>
+                    <li class="px-4 py-2">
+                        <a href="#" id="menu-setup" class="flex items-center p-2 text-base font-normal rounded-lg menu-item">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span class="ml-3 menu-text">Setup</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 우측 콘텐츠 영역 -->
+        <main class="flex-1 flex flex-col h-screen">
+            <header class="bg-white shadow-md h-16 flex items-center justify-between px-6 flex-shrink-0">
+                <h2 id="content-title" class="text-2xl font-semibold text-slate-800"></h2>
+                <div id="action-header-buttons" class="hidden space-x-2">
+                    <button class="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">RESUME</button>
+                    <button id="cancel-job-btn" class="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">CANCEL</button>
+                </div>
+            </header>
+            
+            <div class="flex-1 overflow-y-auto">
+                <div id="action-content" class="p-4 md:p-8"></div>
+                <div id="setup-content" class="p-4 md:p-8 hidden">
+                    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-6 text-slate-800">시스템 설정</h3>
+                        <div class="space-y-8">
+                            <fieldset>
+                                <legend class="text-base font-medium text-slate-900 mb-4">동작 모드</legend>
+                                <div class="space-y-4">
+                                    <div class="flex items-center"><input id="mode-manual" name="operation-mode" type="radio" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300"><label for="mode-manual" class="ml-3 block text-sm font-medium text-slate-700">수동 모드</label></div>
+                                    <div class="flex items-center"><input id="mode-auto" name="operation-mode" type="radio" checked class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300"><label for="mode-auto" class="ml-3 block text-sm font-medium text-slate-700">자동 모드</label></div>
+                                </div>
+                            </fieldset>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">테스트</label>
+                                <div class="flex space-x-2">
+                                    <button id="trigger-error-btn" class="px-4 py-2 text-sm font-medium text-white bg-yellow-500 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">오류 발생시키기</button>
+                                    <button id="trigger-password-btn" class="px-4 py-2 text-sm font-medium text-white bg-indigo-500 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">비밀번호 입력</button>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-slate-200"></div>
+
+                            <div class="flex justify-end">
+                                <button class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">적용</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 오류 메시지 팝업 -->
+    <div id="error-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md"><div class="p-6"><div class="flex items-start space-x-4"><div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100"><svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg></div><div class="flex-1"><h3 class="text-lg font-medium text-slate-900">알림</h3><p id="error-message" class="mt-2 text-sm text-slate-600">여기에 오류 메시지가 표시됩니다.</p></div></div></div><div class="bg-slate-50 px-6 py-3 text-right rounded-b-lg"><button id="close-popup-btn" class="px-4 py-2 bg-slate-200 text-sm font-medium text-slate-800 rounded-md hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400">닫기</button></div></div>
+    </div>
+
+    <!-- 비밀번호 입력 팝업 -->
+    <div id="password-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-xs">
+            <div class="p-6">
+                <h3 class="text-xl font-semibold text-center text-slate-900 mb-4">번호 입력</h3>
+                <div id="password-display" class="w-full h-12 bg-slate-100 rounded-md flex items-center justify-center text-3xl tracking-[.2em] mb-4" style="font-family: 'Courier New', Courier, monospace;"></div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button class="keypad-btn" data-key="1">1</button>
+                    <button class="keypad-btn" data-key="2">2</button>
+                    <button class="keypad-btn" data-key="3">3</button>
+                    <button class="keypad-btn" data-key="4">4</button>
+                    <button class="keypad-btn" data-key="5">5</button>
+                    <button class="keypad-btn" data-key="6">6</button>
+                    <button class="keypad-btn" data-key="7">7</button>
+                    <button class="keypad-btn" data-key="8">8</button>
+                    <button class="keypad-btn" data-key="9">9</button>
+                    <div></div> <!-- Empty space -->
+                    <button class="keypad-btn" data-key="0">0</button>
+                    <button class="keypad-btn" data-key="backspace">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 002.828 0L21 12M3 12l6.414-6.414a2 2 0 012.828 0L21 12"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="bg-slate-50 px-4 py-3 flex justify-end space-x-2 rounded-b-lg">
+                 <button id="cancel-password-btn" class="px-4 py-2 bg-slate-200 text-sm font-medium text-slate-800 rounded-md hover:bg-slate-300">취소</button>
+                 <button id="confirm-password-btn" class="px-4 py-2 bg-blue-600 text-sm font-medium text-white rounded-md hover:bg-blue-700">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // --- 데이터 ---
+            const jobData = { "tasks": [ { "taskName": "__Self-Generated-Task", "taskType": "undock" }, { "taskName": "Goto Source Position", "taskType": "gotoposition" }, { "taskName": "docking for pickup to CAR2", "taskType": "tagdock" }, { "taskName": "load source conveyor", "taskType": "loadconveyor" }, { "taskName": "undock from CAR2", "taskType": "undock" }, { "taskName": "Goto Destination Position", "taskType": "gotoposition" }, { "taskName": "docking to PER3", "taskType": "tagdock" }, { "taskName": "unload to piperack", "taskType": "unloadconveyor" }, { "taskName": "undock from PER3", "taskType": "undock" } ] };
+            let currentPassword = '';
+
+            // --- 이벤트 리스너 ---
+            $('#sidebar-toggle').on('click', () => {
+                $('#sidebar').toggleClass('w-64 w-20 sidebar-collapsed');
+                $('#toggle-icon-collapse, #toggle-icon-expand').toggleClass('hidden');
+            });
+            
+            $('#menu-action').on('click', (e) => { e.preventDefault(); switchView('action'); });
+            $('#menu-setup').on('click', (e) => { e.preventDefault(); switchView('setup'); });
+            
+            // 팝업 관련 이벤트
+            $('#close-popup-btn').on('click', hideErrorPopup);
+            $('#error-popup').on('click', (e) => { if (e.target === e.currentTarget) hideErrorPopup(); });
+            $('#trigger-error-btn').on('click', () => showErrorPopup("사용자 요청에 의해 생성된 테스트 오류입니다."));
+            $('#cancel-job-btn').on('click', () => showErrorPopup("작업이 사용자에 의해 취소되었습니다."));
+            
+            // 비밀번호 팝업 이벤트
+            $('#trigger-password-btn').on('click', showPasswordPopup);
+            $('#cancel-password-btn, #password-popup').on('click', (e) => { if (e.target === e.currentTarget || e.currentTarget.id === 'cancel-password-btn') hidePasswordPopup(); });
+            $('#confirm-password-btn').on('click', () => {
+                console.log("입력된 비밀번호:", currentPassword);
+                showErrorPopup(`입력된 번호는 ${currentPassword} 입니다.`);
+                hidePasswordPopup();
+            });
+            $('.keypad-btn').on('click', function() {
+                const key = $(this).data('key');
+                if (key === 'backspace') {
+                    currentPassword = currentPassword.slice(0, -1);
+                } else if (currentPassword.length < 10) { // 비밀번호 길이 제한
+                    currentPassword += key;
+                }
+                $('#password-display').text('*'.repeat(currentPassword.length));
+            });
+
+            // --- 함수 ---
+            function switchView(viewName) {
+                const isAction = viewName === 'action';
+                $('#content-title').text(isAction ? 'Action Flow' : 'Setup');
+                $('#action-content').toggleClass('hidden', !isAction);
+                $('#setup-content').toggleClass('hidden', isAction);
+                $('#action-header-buttons').toggleClass('hidden', !isAction);
+                
+                $('#menu-action').toggleClass('menu-active text-white', isAction).toggleClass('menu-inactive', !isAction);
+                $('#menu-setup').toggleClass('menu-active text-white', !isAction).toggleClass('menu-inactive', isAction);
+
+                if (isAction) renderFlowchart(jobData.tasks || []);
+            }
+
+            function renderFlowchart(tasks) {
+                const $actionContent = $('#action-content').empty();
+                if (!tasks || tasks.length === 0) {
+                    $actionContent.html('<p class="text-center text-slate-500">표시할 작업이 없습니다.</p>');
+                    return;
+                }
+
+                const $flowWrapper = $('<div class="flex flex-col items-center w-full"></div>').appendTo($actionContent);
+                tasks.forEach((task, index) => {
+                    $flowWrapper.append(`
+                        <div class="bg-white border border-slate-200 shadow-lg rounded-xl p-4 w-full max-w-2xl flex items-center justify-between space-x-4 transform transition-transform hover:scale-105 mb-4">
+                            <div class="flex-shrink-0 h-10 w-10 bg-slate-200 rounded-full flex items-center justify-center font-bold text-slate-600">${index + 1}</div>
+                            <div class="flex-grow text-left">
+                                <p class="font-semibold text-slate-800 text-lg">${task.taskName}</p>
+                                <p class="text-sm text-slate-500 mt-1">Type: ${task.taskType}</p>
+                            </div>
+                            <div class="flex-shrink-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                                <button class="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600">수정</button>
+                                <button class="px-3 py-1 text-sm font-medium text-slate-700 bg-slate-200 rounded-md hover:bg-slate-300">삭제</button>
+                            </div>
+                        </div>
+                    `);
+                    if (index < tasks.length - 1) {
+                        $flowWrapper.append('<div class="h-12 w-px bg-slate-300 my-0 relative"><div class="absolute bottom-0 left-1/2 -translate-x-1/2 border-x-8 border-x-transparent border-t-8 border-t-slate-400"></div></div>');
+                    }
+                });
+            }
+
+            function showErrorPopup(message) {
+                $('#error-message').text(message);
+                $('#error-popup').removeClass('hidden');
+            }
+
+            function hideErrorPopup() {
+                $('#error-popup').addClass('hidden');
+            }
+
+            function showPasswordPopup() {
+                currentPassword = '';
+                $('#password-display').text('');
+                $('#password-popup').removeClass('hidden');
+            }
+
+            function hidePasswordPopup() {
+                $('#password-popup').addClass('hidden');
+            }
+
+            // --- 초기화 ---
+            switchView('action');
+        });
+    </script>
+</body>
+</html>
