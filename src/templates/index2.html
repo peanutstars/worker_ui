@@ -6,13 +6,14 @@
     <title>반응형 대시보드</title>
     <!-- Tailwind CSS CDN 로드 -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/output.css')}}">
     <!-- jQuery CDN 로드 -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Google Fonts (Inter & Noto Sans KR) 로드 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
+    <!--<style>
         /* 기본 폰트 설정 */
         body {
             font-family: 'Noto Sans KR', 'Inter', sans-serif;
@@ -53,11 +54,14 @@
         .menu-inactive:hover {
             background-color: #334155; /* hover:bg-slate-700 */
         }
-        /* 키패드 버튼 스타일 */
-        .keypad-btn {
-            @apply w-full h-14 bg-slate-200 rounded-lg text-2xl font-semibold text-slate-700 flex items-center justify-center transition-colors hover:bg-slate-300 active:bg-slate-400;
+        /* 키패드/키보드 버튼 스타일 */
+        .keypad-btn, .keyboard-btn {
+            @apply h-12 bg-slate-200 rounded-md text-lg font-semibold text-slate-700 flex items-center justify-center transition-colors hover:bg-slate-300 border border-slate-300;
         }
-    </style>
+        .keyboard-btn.active {
+            @apply bg-blue-500 text-white;
+        }
+    </style>-->
 </head>
 <body class="bg-slate-100 overflow-hidden">
 
@@ -104,27 +108,45 @@
                 <div id="setup-content" class="p-4 md:p-8 hidden">
                     <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
                         <h3 class="text-2xl font-bold mb-6 text-slate-800">시스템 설정</h3>
-                        <div class="space-y-8">
-                            <fieldset>
-                                <legend class="text-base font-medium text-slate-900 mb-4">동작 모드</legend>
-                                <div class="space-y-4">
-                                    <div class="flex items-center"><input id="mode-manual" name="operation-mode" type="radio" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300"><label for="mode-manual" class="ml-3 block text-sm font-medium text-slate-700">수동 모드</label></div>
-                                    <div class="flex items-center"><input id="mode-auto" name="operation-mode" type="radio" checked class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300"><label for="mode-auto" class="ml-3 block text-sm font-medium text-slate-700">자동 모드</label></div>
+                        <div class="space-y-6">
+                            <!-- 라디오 모드 -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                                <label class="text-slate-600 font-medium">라디오 모드</label>
+                                <div class="md:col-span-2 flex space-x-6">
+                                    <div class="flex items-center"><input id="mode-manual" name="operation-mode" type="radio" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300"><label for="mode-manual" class="ml-2 text-sm font-medium text-slate-700">수동</label></div>
+                                    <div class="flex items-center"><input id="mode-auto" name="operation-mode" type="radio" checked class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300"><label for="mode-auto" class="ml-2 text-sm font-medium text-slate-700">자동</label></div>
                                 </div>
-                            </fieldset>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">테스트</label>
-                                <div class="flex space-x-2">
-                                    <button id="trigger-error-btn" class="px-4 py-2 text-sm font-medium text-white bg-yellow-500 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">오류 발생시키기</button>
-                                    <button id="trigger-password-btn" class="px-4 py-2 text-sm font-medium text-white bg-indigo-500 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">비밀번호 입력</button>
+                            </div>
+                            <!-- Enable Stand alone -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                                <label class="text-slate-600 font-medium">Enable Stand alone</label>
+                                <div class="md:col-span-2 flex space-x-6">
+                                    <div class="flex items-center"><input id="standalone-true" name="standalone-mode" type="radio" checked class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300"><label for="standalone-true" class="ml-2 text-sm font-medium text-slate-700">True</label></div>
+                                    <div class="flex items-center"><input id="standalone-false" name="standalone-mode" type="radio" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300"><label for="standalone-false" class="ml-2 text-sm font-medium text-slate-700">False</label></div>
+                                </div>
+                            </div>
+                            <!-- Navigate Topic -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                                <label for="navigate-topic-input" class="text-slate-600 font-medium">Navigate Topic</label>
+                                <div class="md:col-span-2">
+                                    <input type="text" id="navigate-topic-input" readonly class="mt-1 block w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="여기를 클릭하여 입력">
+                                </div>
+                            </div>
+                            <!-- 체크 모드 -->
+                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+                                <label class="text-slate-600 font-medium mt-1">체크 모드</label>
+                                <div class="md:col-span-2 flex flex-wrap gap-x-6 gap-y-2">
+                                    <div class="flex items-center"><input id="check-a" name="check-mode" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300 rounded"><label for="check-a" class="ml-2 text-sm font-medium text-slate-700">A</label></div>
+                                    <div class="flex items-center"><input id="check-b" name="check-mode" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300 rounded"><label for="check-b" class="ml-2 text-sm font-medium text-slate-700">B</label></div>
+                                    <div class="flex items-center"><input id="check-c" name="check-mode" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300 rounded"><label for="check-c" class="ml-2 text-sm font-medium text-slate-700">C</label></div>
+                                    <div class="flex items-center"><input id="check-d" name="check-mode" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300 rounded"><label for="check-d" class="ml-2 text-sm font-medium text-slate-700">D</label></div>
                                 </div>
                             </div>
 
-                            <div class="border-t border-slate-200"></div>
-
-                            <div class="flex justify-end">
-                                <button class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">적용</button>
+                            <div class="border-t border-slate-200 pt-5">
+                                <div class="flex justify-end">
+                                    <button class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">적용</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -154,11 +176,9 @@
                     <button class="keypad-btn" data-key="7">7</button>
                     <button class="keypad-btn" data-key="8">8</button>
                     <button class="keypad-btn" data-key="9">9</button>
-                    <div></div> <!-- Empty space -->
+                    <button class="keypad-btn text-base" data-key="clr">CLR</button>
                     <button class="keypad-btn" data-key="0">0</button>
-                    <button class="keypad-btn" data-key="backspace">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 002.828 0L21 12M3 12l6.414-6.414a2 2 0 012.828 0L21 12"></path></svg>
-                    </button>
+                    <button class="keypad-btn text-base" data-key="del">DEL</button>
                 </div>
             </div>
             <div class="bg-slate-50 px-4 py-3 flex justify-end space-x-2 rounded-b-lg">
@@ -167,12 +187,28 @@
             </div>
         </div>
     </div>
+    
+    <!-- 영문 자판기 팝업 -->
+    <div id="keyboard-popup" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-2 hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-3xl p-4">
+            <input type="text" id="keyboard-display" class="w-full h-12 border border-slate-300 rounded-md mb-4 text-xl px-3" />
+            <div id="keyboard-container" class="space-y-2"></div>
+            <div class="mt-4 flex justify-end">
+                <button id="keyboard-apply-btn" class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700">적용</button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         $(document).ready(function() {
             // --- 데이터 ---
             const jobData = { "tasks": [ { "taskName": "__Self-Generated-Task", "taskType": "undock" }, { "taskName": "Goto Source Position", "taskType": "gotoposition" }, { "taskName": "docking for pickup to CAR2", "taskType": "tagdock" }, { "taskName": "load source conveyor", "taskType": "loadconveyor" }, { "taskName": "undock from CAR2", "taskType": "undock" }, { "taskName": "Goto Destination Position", "taskType": "gotoposition" }, { "taskName": "docking to PER3", "taskType": "tagdock" }, { "taskName": "unload to piperack", "taskType": "unloadconveyor" }, { "taskName": "undock from PER3", "taskType": "undock" } ] };
             let currentPassword = '';
+            let passwordContext = null;
+            let keyboardTarget = null;
+            let keyboardView = 'alpha'; // 'alpha' or 'symbols'
+            let isCaps = false;
 
             // --- 이벤트 리스너 ---
             $('#sidebar-toggle').on('click', () => {
@@ -181,32 +217,26 @@
             });
             
             $('#menu-action').on('click', (e) => { e.preventDefault(); switchView('action'); });
-            $('#menu-setup').on('click', (e) => { e.preventDefault(); switchView('setup'); });
             
-            // 팝업 관련 이벤트
+            $('#menu-setup').on('click', (e) => {
+                e.preventDefault();
+                showPasswordPopup('setup_auth');
+            });
+            
+            // 오류 팝업
             $('#close-popup-btn').on('click', hideErrorPopup);
             $('#error-popup').on('click', (e) => { if (e.target === e.currentTarget) hideErrorPopup(); });
-            $('#trigger-error-btn').on('click', () => showErrorPopup("사용자 요청에 의해 생성된 테스트 오류입니다."));
             $('#cancel-job-btn').on('click', () => showErrorPopup("작업이 사용자에 의해 취소되었습니다."));
             
-            // 비밀번호 팝업 이벤트
-            $('#trigger-password-btn').on('click', showPasswordPopup);
+            // 비밀번호 팝업
             $('#cancel-password-btn, #password-popup').on('click', (e) => { if (e.target === e.currentTarget || e.currentTarget.id === 'cancel-password-btn') hidePasswordPopup(); });
-            $('#confirm-password-btn').on('click', () => {
-                console.log("입력된 비밀번호:", currentPassword);
-                showErrorPopup(`입력된 번호는 ${currentPassword} 입니다.`);
-                hidePasswordPopup();
-            });
-            $('.keypad-btn').on('click', function() {
-                const key = $(this).data('key');
-                if (key === 'backspace') {
-                    currentPassword = currentPassword.slice(0, -1);
-                } else if (currentPassword.length < 10) { // 비밀번호 길이 제한
-                    currentPassword += key;
-                }
-                $('#password-display').text('*'.repeat(currentPassword.length));
-            });
+            $('#confirm-password-btn').on('click', handlePasswordConfirm);
+            $('.keypad-btn').on('mousedown touchstart', function() { $(this).addClass('bg-slate-400'); }).on('mouseup touchend mouseleave', function() { $(this).removeClass('bg-slate-400'); }).on('click', handleKeypadInput);
 
+            // 자판기 팝업
+            $('#navigate-topic-input').on('click', function() { showKeyboardPopup($(this)); });
+            $('#keyboard-apply-btn').on('click', applyKeyboardInput);
+            
             // --- 함수 ---
             function switchView(viewName) {
                 const isAction = viewName === 'action';
@@ -227,45 +257,157 @@
                     $actionContent.html('<p class="text-center text-slate-500">표시할 작업이 없습니다.</p>');
                     return;
                 }
-
                 const $flowWrapper = $('<div class="flex flex-col items-center w-full"></div>').appendTo($actionContent);
                 tasks.forEach((task, index) => {
                     $flowWrapper.append(`
                         <div class="bg-white border border-slate-200 shadow-lg rounded-xl p-4 w-full max-w-2xl flex items-center justify-between space-x-4 transform transition-transform hover:scale-105 mb-4">
                             <div class="flex-shrink-0 h-10 w-10 bg-slate-200 rounded-full flex items-center justify-center font-bold text-slate-600">${index + 1}</div>
-                            <div class="flex-grow text-left">
-                                <p class="font-semibold text-slate-800 text-lg">${task.taskName}</p>
-                                <p class="text-sm text-slate-500 mt-1">Type: ${task.taskType}</p>
-                            </div>
-                            <div class="flex-shrink-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-                                <button class="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600">수정</button>
-                                <button class="px-3 py-1 text-sm font-medium text-slate-700 bg-slate-200 rounded-md hover:bg-slate-300">삭제</button>
-                            </div>
-                        </div>
-                    `);
+                            <div class="flex-grow text-left"><p class="font-semibold text-slate-800 text-lg">${task.taskName}</p><p class="text-sm text-slate-500 mt-1">Type: ${task.taskType}</p></div>
+                            <div class="flex-shrink-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2"><button class="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600">수정</button><button class="px-3 py-1 text-sm font-medium text-slate-700 bg-slate-200 rounded-md hover:bg-slate-300">삭제</button></div>
+                        </div>`);
                     if (index < tasks.length - 1) {
                         $flowWrapper.append('<div class="h-12 w-px bg-slate-300 my-0 relative"><div class="absolute bottom-0 left-1/2 -translate-x-1/2 border-x-8 border-x-transparent border-t-8 border-t-slate-400"></div></div>');
                     }
                 });
             }
 
-            function showErrorPopup(message) {
-                $('#error-message').text(message);
-                $('#error-popup').removeClass('hidden');
-            }
+            function showErrorPopup(message) { $('#error-message').text(message); $('#error-popup').removeClass('hidden'); }
+            function hideErrorPopup() { $('#error-popup').addClass('hidden'); }
 
-            function hideErrorPopup() {
-                $('#error-popup').addClass('hidden');
-            }
-
-            function showPasswordPopup() {
+            function showPasswordPopup(context) {
+                passwordContext = context;
                 currentPassword = '';
                 $('#password-display').text('');
                 $('#password-popup').removeClass('hidden');
             }
+            function hidePasswordPopup() { $('#password-popup').addClass('hidden'); passwordContext = null; }
+            
+            function handlePasswordConfirm() {
+                if (passwordContext === 'setup_auth') {
+                    if (currentPassword === '12345') {
+                        switchView('setup');
+                    } else {
+                        showErrorPopup('입력 번호가 올바르지 않습니다.');
+                    }
+                }
+                hidePasswordPopup();
+            }
 
-            function hidePasswordPopup() {
-                $('#password-popup').addClass('hidden');
+            function handleKeypadInput() {
+                // [FIX] Always treat key as a string
+                const key = String($(this).data('key'));
+                if (key === 'del') currentPassword = currentPassword.slice(0, -1);
+                else if (key === 'clr') currentPassword = '';
+                else if (currentPassword.length < 10) currentPassword += key;
+                $('#password-display').text('*'.repeat(currentPassword.length));
+            }
+            
+            // 자판기 관련 함수
+            function showKeyboardPopup(target) {
+                keyboardTarget = target;
+                $('#keyboard-display').val(keyboardTarget.val());
+                keyboardView = 'alpha'; // 초기 뷰는 알파벳
+                isCaps = false; // Caps Lock 초기화
+                renderKeyboard();
+                $('#keyboard-popup').removeClass('hidden');
+            }
+
+            function hideKeyboardPopup() { $('#keyboard-popup').addClass('hidden'); keyboardTarget = null; }
+
+            function applyKeyboardInput() {
+                if (keyboardTarget) {
+                    keyboardTarget.val($('#keyboard-display').val());
+                }
+                hideKeyboardPopup();
+            }
+
+            function renderKeyboard() {
+                const alphaKeys = [
+                    ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+                    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+                    ['shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'backspace'],
+                    ['123', 'space', 'caps']
+                ];
+                const symbolKeys = [
+                    ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
+                    ['@', '#', '$', '_', '&', '-', '+', '(', ')', '/'],
+                    ['=', '*', '"', "'", ':', ';', '!', '?', 'backspace'],
+                    ['abc', 'space', '.', ',']
+                ];
+
+                const keys = (keyboardView === 'alpha') ? alphaKeys : symbolKeys;
+                const $container = $('#keyboard-container').empty();
+
+                keys.forEach(row => {
+                    const $rowDiv = $('<div class="flex justify-center items-center space-x-1"></div>');
+                    row.forEach(key => {
+                        let displayKey = key;
+                        if (keyboardView === 'alpha' && key.length === 1) {
+                            displayKey = isCaps ? key.toUpperCase() : key.toLowerCase();
+                        }
+                        
+                        const $keyBtn = $(`<button class="keyboard-btn p-2"></button>`).attr('data-key', key).text(displayKey);
+
+                        if (key.length > 1) { // Special keys
+                            $keyBtn.addClass('flex-grow text-sm');
+                            if(key === 'space') $keyBtn.css('max-width', '40%').text('Space');
+                            if(key === 'shift' || key === 'caps') $keyBtn.text(key.charAt(0).toUpperCase() + key.slice(1));
+                            if(key === 'backspace') $keyBtn.html('&#9003;'); // Backspace icon
+                            if(key === '123' || key === 'abc') $keyBtn.text(key.toUpperCase());
+                        }
+
+                        if (key === 'caps' && isCaps) $keyBtn.addClass('active');
+
+                        $rowDiv.append($keyBtn);
+                    });
+                    $container.append($rowDiv);
+                });
+                
+                $('.keyboard-btn').off('click').on('click', handleKeyboardInput);
+            }
+            
+            function handleKeyboardInput() {
+                // [FIX] Always treat key as a string
+                const key = String($(this).attr('data-key'));
+                let currentValue = $('#keyboard-display').val();
+                
+                switch(key) {
+                    case 'backspace':
+                        $('#keyboard-display').val(currentValue.slice(0, -1));
+                        break;
+                    case 'space':
+                        $('#keyboard-display').val(currentValue + ' ');
+                        break;
+                    case 'shift':
+                        isCaps = !isCaps;
+                        renderKeyboard();
+                        setTimeout(() => { 
+                            if (isCaps && key === 'shift') { // Only toggle back for momentary shift
+                                isCaps = false;
+                                renderKeyboard();
+                            }
+                        }, 300);
+                        break;
+                    case 'caps':
+                        isCaps = !isCaps;
+                        renderKeyboard();
+                        break;
+                    case '123':
+                        keyboardView = 'symbols';
+                        renderKeyboard();
+                        break;
+                    case 'abc':
+                        keyboardView = 'alpha';
+                        renderKeyboard();
+                        break;
+                    default:
+                        let char = key;
+                        if (keyboardView === 'alpha') {
+                            char = isCaps ? key.toUpperCase() : key.toLowerCase();
+                        }
+                        $('#keyboard-display').val(currentValue + char);
+                        break;
+                }
             }
 
             // --- 초기화 ---
