@@ -7,15 +7,15 @@ print = Log.info
 
 app = Flask(__name__)
    
-# @app.route('/')
-# def index():
-#     # templates/index.html 파일을 렌더링
-#     return render_template('index.html')
-
 @app.route('/')
 def index():
     # templates/index.html 파일을 렌더링
     return render_template('index2.html')
+
+@app.route('/gemini')
+def index_gemini():
+    # templates/index.index_gemini 파일을 렌더링
+    return render_template('index_gemini.html')
 
 # /v1/api/job 엔드포인트: POST 요청 처리 및 JSON 데이터 응답
 @app.route('/v1/api/request', methods=['POST'])
