@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from core.log import Log
 from core.model import ApiRequestResponse
+from core.bot_info import BotStatus
 
 print = Log.info
 
@@ -27,8 +28,8 @@ def handle_job_post_and_respond():
         client_data = request.get_json(silent=True) # silent=True는 JSON 파싱 실패 시 None 반환
         if client_data:
             print(f"클라이언트로부터 받은 데이터 (POST 본문): {client_data}")
-            print(f"클라이언트 Request: {client_data.get('request')}")
-            api_response.request = client_data.get('request')
+            print(f"클라이언트 Request: {client_data.get('command')}")
+            api_response.command = client_data.get('command')
         else:
             print("클라이언트로부터 JSON 데이터가 수신되지 않았거나 형식이 올바르지 않습니다.")
             print(f"Content-Type: {request.headers.get('Content-Type')}")
@@ -37,7 +38,7 @@ def handle_job_post_and_respond():
         api_response.message = f'Error in parsing: {e}'
         print(f"{api_response.message}")
     
-    if api_response.request == "job":   
+    if api_response.command == "job":
         # 클라이언트에게 전달할 JSON 데이터 정의
         data = {
             "tasks": [
@@ -65,12 +66,15 @@ def handle_job_post_and_respond():
                 }
             ]
         }
+        if not BotStatus().debug_have_job():
+            data = {}
+        
         api_response.success = True
         api_response.value = data
     else:
         api_response.success = False
         if not api_response.message:
-            api_response.message = f"unknown request[{api_response.request}]"
+            api_response.message = f"unknown request[{api_response.command}]"
 
     print(f"클라이언트에 보낼 JSON 데이터: {api_response.to_json()}")
 

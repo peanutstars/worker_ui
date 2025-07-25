@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
               console.log("fail::"+emsg);
               if (typeof ajax.showError === 'function') {
                 console.log("fail@@"+emsg);
-                ajax.showError('FAIL', emsg);
+                ajax.showError('Ajax.FAIL', emsg);
               }
             }
           } ,
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             emsg += '\nMessage: ' + resp.message;
             console.log("error::"+emsg);
             if (typeof ajax.showError === 'function') {
-              ajax.showError('ERROR', emsg);
+              ajax.showError('Ajax.ERROR', emsg);
             }
           }
           $.ajax(opts);

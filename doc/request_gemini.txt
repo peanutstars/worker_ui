@@ -1,0 +1,165 @@
+요구사항을 다시 전달합니다.
+
+{
+  "tasks": [
+    {
+      "cancelable": true,
+      "expectDuration": 10,
+      "instant": false,
+      "nextFail": "",
+      "nextOk": "",
+      "properties": "{\"position\":\"charger2\"}",
+      "taskId": "undock.0000",
+      "taskName": "__Self-Generated-Task",
+      "taskType": "undock"
+    },
+    {
+      "cancelable": true,
+      "expectDuration": 10,
+      "instant": false,
+      "nextFail": "",
+      "nextOk": "",
+      "properties": "{\"mapName\":\"SA_1_2\",\"position\":\"CAR2\",\"btName\":\"\"}",
+      "taskId": "gotoposition.0000",
+      "taskName": "Goto Source Position",
+      "taskType": "gotoposition"
+    },
+    {
+      "cancelable": true,
+      "expectDuration": 10,
+      "instant": false,
+      "nextFail": "",
+      "nextOk": "",
+      "properties": "{\"position\":\"CAR2\"}",
+      "taskId": "tagdock.0000",
+      "taskName": "docking for pickup to CAR2",
+      "taskType": "tagdock"
+    },
+    {
+      "cancelable": false,
+      "expectDuration": 10,
+      "instant": false,
+      "nextFail": "",
+      "nextOk": "",
+      "properties": "{\"position\":\"CAR2\",\"type\":\"conveyor\",\"locks\":\"CNV-240003.L2\",\"align\":\"other\",\"address\":\"10.203.22.176:5000\",\"timeout\":\"60\"}",
+      "taskId": "loadconveyor.0000",
+      "taskName": "load source conveyor",
+      "taskType": "loadconveyor"
+    },
+    {
+      "cancelable": true,
+      "expectDuration": 10,
+      "instant": false,
+      "nextFail": "",
+      "nextOk": "",
+      "properties": "{\"position\":\"CAR2\"}",
+      "taskId": "undock.0000",
+      "taskName": "undock from CAR2",
+      "taskType": "undock"
+    },
+    {
+      "cancelable": true,
+      "expectDuration": 10,
+      "instant": false,
+      "nextFail": "",
+      "nextOk": "",
+      "properties": "{\"mapName\":\"SA_1_2\",\"position\":\"PER3\",\"btName\":\"\"}",
+      "taskId": "gotoposition.0001",
+      "taskName": "Goto Destination Position",
+      "taskType": "gotoposition"
+    },
+    {
+      "cancelable": true,
+      "expectDuration": 10,
+      "instant": false,
+      "nextFail": "",
+      "nextOk": "",
+      "properties": "{\"position\":\"PER3\"}",
+      "taskId": "tagdock.0001",
+      "taskName": "docking to PER3",
+      "taskType": "tagdock"
+    },
+    {
+      "cancelable": false,
+      "expectDuration": 10,
+      "instant": false,
+      "nextFail": "",
+      "nextOk": "",
+      "properties": "{\"position\":\"PER3\",\"type\":\"piperack\",\"locks\":\"\",\"align\":\"\",\"address\":\"\",\"timeout\":\"60\"}",
+      "taskId": "unloadpiperack.0000",
+      "taskName": "unload to piperack",
+      "taskType": "unloadconveyor"
+    },
+    {
+      "cancelable": true,
+      "expectDuration": 10,
+      "instant": false,
+      "nextFail": "",
+      "nextOk": "",
+      "properties": "{\"position\":\"PER3\"}",
+      "taskId": "undock.0001",
+      "taskName": "undock from PER3",
+      "taskType": "undock"
+    }
+  ]
+}
+
+화면 구성에 대해 전달합니다.
+1. 반응형 Web Page입니다.
+1-1. chrome, firefox, edge 브라우저에서 동일하게 동작해야 합니다.
+1-2. 손가락으로 터치 화면을 사용해 각각의 버튼을 누를수 있어야 합니다.
+1-3. 스크롤이 가능한 화면은 손가락으로 밀어서 스크롤이 가능해야 합니다.
+1-4. html 내에서 jquery 라이브러리를 사용하도록 추가해 주십시오.
+1-5. css는 tailwindcss를 가져와 사용합니다.
+1-6. 작성한 코드에 동작 내용에 대한 주석을 추가합니다.
+1-7. 표시되는 문자열은 다국어 지원이 가능해야 합니다.
+1-7-1. 다국어는 한국어, 영어를 지원하고, 추후 독일어, 일본어 및 다른 언어가 추가 될 수 있습니다.
+
+2. 좌측에는 전체 페이지를 옮겨갈수 있는 메뉴가 있고, 메뉴는 Action, Setup 등이 있고, 우측에는 각 메뉴의 화면을 표시하고 싶어.
+2-1. 메뉴 파트는 축소/확대가 있는 버튼이 있어.
+2-2. 메뉴의 Action과 Setup 항목을 클릭하면 우측 화면이 관련된 내용으로 전환을 시켜줘.
+
+3. 우측에 표시하는 Action 화면은 구성하는 Contents의 길이에 따라 스크롤이 가능한 화면을 구성합니다.
+3-1. 화면 구성을 위한 json 데이터는 ajax 방식으로 /api/v1/request URL의 POST 방식으로 가져오며, 형식은 위의 json과 같습니다.
+3-1-1. /api/v1/request POST 파라미터 { "command": "job" }를 수행하여 json 데이터를 가져옵니다.
+3-1-2. /api/v1/request의 response는 { "command": "a requested command", "success" : true, "value": 위의 json 데이터, "message": "reason if success is false" } 형식으로 데이터를 받습니다.
+3-2. Action 화면은 json 데이터의 tasks 리스트의 각 item에서 taskName을 기준으로 표시합니다.
+3-2-1. 웹서버로부터 json 데이터를 ajax 방식으로 받아옵니다.
+3-2-2. json 데이터를 받아오면, 3-3으로 진행이되고
+3-2-3. json 데이터가 null 또는 {}이면, Action 화면의 중앙에 "작업 대기중입니다."를 표시합니다.
+3-2-3-1. "작업 대기중입니다." 표시는 3-3에서 얘기하는 "작업상자" 스타일로 표시합니다.
+3-2-4. 테스트를 위해서 좌측 Action을 클릭할 때마다 json 데이터를 받은경우와 받아오지 못한 경우를 교차하여 표시합니다.
+3-3. 각 항목은 Flowchart 처럼 라운드 박스에 화살표로 연결하여 표시하고, 이 라운드 박스를 "작업상자"로 정의합니다.
+3-4. 작업 상자의 위쪽에는 조금 크게 taskName을 표시하고, 아래쪽에는 taskType을 작게 표시합니다.
+3-5. 각 작업상자 바깥쪽 우측에는 버튼을 2개 만들어줘.
+3-6. 각 작업상자 바깥쪽 좌측에는 작업상자의 번호를 추가할게
+
+4. 우측에 표시하는 Setup 화면은 일반적인 설정 화면을 표시해줘.
+4-1. Setup 화면에서 왼쪽에는 항목의 이름을 표시하고, 오른쪽에는 항목의 값들을 표시합니다. 
+4-1-1. 왼쪽에는 "라디오 모드" 표시, 오른쪽에는 라디오 버튼으로 수동, 자동을 선택할 수 있습니다.
+4-1-2. 왼쪽에는 "Enable Stand alone" 표시, 오른쪽에는 라디오 버튼으로 True, Falue 선택할 수 있습니다.
+4-1-3. 왼쪽에는 "Navigate Topic" 표시, 오른쪽에는 Text 입력 박스가 있습니다.
+4-1-3-1. Text 입력 박스를 선택하면, 영문 대소문자 입력이 가능한 자판기 팝업 창이 생성되어 문자입력이 가능합니다.
+4-1-3-2. 영문 자판기 팝업 창의 첫 라인에는 입력 문자 확인이 가능한 Text Box가 있고, 적용 버튼을 누르면 자판기 팝업이 사라지고, Text 입력 박스에 입력 글자가 표시됩니다. 
+4-1-4  왼쪽에는 "체크 모드" 표시, 오른쪽에는 체크박스로 A, B, C, D를 각각 선택할수 있습니다.
+4-2. 다국어 지원에 대한 언어 변경을 항목이 있어야 합니다.
+4-2-1. 언어선택은 콤보 박스를 통해서 지원하는 언어를 표시하고, 선택이 가능합니다.
+
+5. 오류 발생 팝업을 위해서 showErrorPopup 함수를 추가해줘.
+5-1. Setup 화면에 테스트를 위한 오류 발생 버튼을 만들고, 버튼을 눌렀을때 showErrorPopup 함수가 호출되게 해줘.
+5-2. Action 화면에서 CANCEL 버튼을 눌렀을 때에도, showErrorPopup 함수가 호출되게 해줘.
+
+6. 비밀번호 숫자를 입력하기 위해서 showPasswordPopup 함수를 추가해줘.
+6-1. 팝업의 맨 위에는 "번호 입력" 제목을 넣고,
+6-2. 다음 줄에는 입력 번호 표시를 해주고, 입력 번호는 *로 표시를 해줘.
+6-3. 그 아래에는 번호를 입력하기 위한 0~9, DEL, CLR 버튼을 3x4 형태로 만들어 줘.
+6-3-1. DEL 버튼은 마지막에 입력한 숫자를 하나씩 지우는 기능을 가지고 있습니다.
+6-3-2. CLR 버튼은 입력한 모든 숫자를 지우는 기능을 가지고 있습니다.
+6-3-3. 3x4 형태로 버튼의 순서는 1, 2, 3, 4, 5, 6, 7, 8, CLR, 0, DEL 순서로 되어 있습니다.
+6-4. 각 버튼은 테두리가 있고, 클릭하고 있는 동안 버튼의 색상이 변하게해서 누렀음을 인지하게 해줘.
+6-5. 좌측 Setup 메뉴를 누르면, 화면을 전환하기 전에 비밀번호 입력 팝업을 띄워줘.
+6-5-1. 입력 번호가 "12345"이면 Setup 화면으로 전환하고,
+6-5-2. 입력 번호가 "12345"가 아니면, 오류 발생 팝업을 띄우고 현재의 화면을 유지해줘.
+
+
+작업 부탁해.

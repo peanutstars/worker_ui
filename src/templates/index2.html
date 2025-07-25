@@ -71,7 +71,7 @@
         <aside id="sidebar" class="bg-slate-800 text-white transition-all duration-300 ease-in-out w-64 flex flex-col flex-shrink-0">
             <!-- 로고 및 축소/확대 버튼 -->
             <div class="flex items-center justify-between p-4 border-b border-slate-700 h-16">
-                <h1 class="text-xl font-bold whitespace-nowrap menu-text">Bot Worker</h1>
+                <h1 class="text-xl font-bold whitespace-nowrap menu-text" data-i18n="dashboard_title">대시보드</h1>
                 <button id="sidebar-toggle" class="p-2 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500">
                     <svg id="toggle-icon-collapse" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                     <svg id="toggle-icon-expand" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
@@ -83,13 +83,13 @@
                     <li class="px-4 py-2">
                         <a href="#" id="menu-action" class="flex items-center p-2 text-base font-normal rounded-lg menu-item">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                            <span class="ml-3 menu-text">Action</span>
+                            <span class="ml-3 menu-text" data-i18n="menu_action">Action</span>
                         </a>
                     </li>
                     <li class="px-4 py-2">
                         <a href="#" id="menu-setup" class="flex items-center p-2 text-base font-normal rounded-lg menu-item">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            <span class="ml-3 menu-text">Setup</span>
+                            <span class="ml-3 menu-text" data-i18n="menu_setup">Setup</span>
                         </a>
                     </li>
                 </ul>
@@ -103,8 +103,8 @@
                 <h2 id="content-title" class="text-2xl font-semibold text-slate-800"></h2>
                 <!-- Action 화면 전용 헤더 버튼 -->
                 <div id="action-header-buttons" class="hidden space-x-2">
-                    <button class="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">RESUME</button>
-                    <button id="cancel-job-btn" class="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">CANCEL</button>
+                    <button class="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" data-i18n="btn_resume">RESUME</button>
+                    <button id="cancel-job-btn" class="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" data-i18n="btn_cancel">CANCEL</button>
                 </div>
             </header>
             
@@ -115,14 +115,24 @@
                 <!-- Setup 화면 콘텐츠 -->
                 <div id="setup-content" class="p-4 md:p-8 hidden">
                     <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-                        <h3 class="text-2xl font-bold mb-6 text-slate-800">시스템 설정</h3>
+                        <h3 class="text-2xl font-bold mb-6 text-slate-800" data-i18n="setup_title">시스템 설정</h3>
                         <div class="space-y-6">
+                            <!-- 언어 선택 -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                                <label for="language-select" class="text-slate-600 font-medium" data-i18n="setup_language">언어</label>
+                                <div class="md:col-span-2">
+                                    <select id="language-select" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                        <option value="ko">한국어</option>
+                                        <option value="en">English</option>
+                                    </select>
+                                </div>
+                            </div>
                             <!-- 라디오 모드 -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                                <label class="text-slate-600 font-medium">라디오 모드</label>
+                                <label class="text-slate-600 font-medium" data-i18n="setup_radio_mode">라디오 모드</label>
                                 <div class="md:col-span-2 flex space-x-6">
-                                    <div class="flex items-center"><input id="mode-manual" name="operation-mode" type="radio" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300"><label for="mode-manual" class="ml-2 text-sm font-medium text-slate-700">수동</label></div>
-                                    <div class="flex items-center"><input id="mode-auto" name="operation-mode" type="radio" checked class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300"><label for="mode-auto" class="ml-2 text-sm font-medium text-slate-700">자동</label></div>
+                                    <div class="flex items-center"><input id="mode-manual" name="operation-mode" type="radio" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300"><label for="mode-manual" class="ml-2 text-sm font-medium text-slate-700" data-i18n="setup_radio_manual">수동</label></div>
+                                    <div class="flex items-center"><input id="mode-auto" name="operation-mode" type="radio" checked class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300"><label for="mode-auto" class="ml-2 text-sm font-medium text-slate-700" data-i18n="setup_radio_auto">자동</label></div>
                                 </div>
                             </div>
                             <!-- Enable Stand alone -->
@@ -137,12 +147,12 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                                 <label for="navigate-topic-input" class="text-slate-600 font-medium">Navigate Topic</label>
                                 <div class="md:col-span-2">
-                                    <input type="text" id="navigate-topic-input" readonly class="mt-1 block w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="여기를 클릭하여 입력">
+                                    <input type="text" id="navigate-topic-input" readonly class="mt-1 block w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" data-i18n-placeholder="placeholder_click_to_edit">
                                 </div>
                             </div>
                             <!-- 체크 모드 -->
                              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-                                <label class="text-slate-600 font-medium mt-1">체크 모드</label>
+                                <label class="text-slate-600 font-medium mt-1" data-i18n="setup_check_mode">체크 모드</label>
                                 <div class="md:col-span-2 flex flex-wrap gap-x-6 gap-y-2">
                                     <div class="flex items-center"><input id="check-a" name="check-mode" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300 rounded"><label for="check-a" class="ml-2 text-sm font-medium text-slate-700">A</label></div>
                                     <div class="flex items-center"><input id="check-b" name="check-mode" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-slate-300 rounded"><label for="check-b" class="ml-2 text-sm font-medium text-slate-700">B</label></div>
@@ -153,16 +163,16 @@
                             
                             <!-- 테스트 버튼 -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                                 <label class="text-slate-600 font-medium">테스트</label>
+                                 <label class="text-slate-600 font-medium" data-i18n="setup_test">테스트</label>
                                  <div class="md:col-span-2">
-                                     <button id="trigger-error-btn" class="px-4 py-2 text-sm font-medium text-white bg-yellow-500 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">오류 발생시키기</button>
+                                     <button id="trigger-error-btn" class="px-4 py-2 text-sm font-medium text-white bg-yellow-500 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500" data-i18n="btn_trigger_error">오류 발생시키기</button>
                                  </div>
                             </div>
 
                             <!-- 적용 버튼 -->
                             <div class="border-t border-slate-200 pt-5">
                                 <div class="flex justify-end">
-                                    <button class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">적용</button>
+                                    <button class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" data-i18n="btn_apply">적용</button>
                                 </div>
                             </div>
                         </div>
@@ -174,14 +184,31 @@
 
     <!-- 오류 메시지 팝업 -->
     <div id="error-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md"><div class="p-6"><div class="flex items-start space-x-4"><div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100"><svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg></div><div class="flex-1"><h3 class="text-lg font-medium text-slate-900">알림</h3><p id="error-message" class="mt-2 text-sm text-slate-600">여기에 오류 메시지가 표시됩니다.</p></div></div></div><div class="bg-slate-50 px-6 py-3 text-right rounded-b-lg"><button id="close-popup-btn" class="px-4 py-2 bg-slate-200 text-sm font-medium text-slate-800 rounded-md hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400">닫기</button></div></div>
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="p-6">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                        <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h3 id="error-title" class="text-lg font-medium text-slate-900" data-i18n="popup_title_notification">알림</h3>
+                        <p id="error-message" class="mt-2 text-sm text-slate-600"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-slate-50 px-6 py-3 text-right rounded-b-lg">
+                <button id="close-popup-btn" class="px-4 py-2 bg-slate-200 text-sm font-medium text-slate-800 rounded-md hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400" data-i18n="btn_close">닫기</button>
+            </div>
+        </div>
     </div>
 
     <!-- 비밀번호 입력 팝업 -->
     <div id="password-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-xs">
             <div class="p-6">
-                <h3 class="text-xl font-semibold text-center text-slate-900 mb-4">번호 입력</h3>
+                <h3 class="text-xl font-semibold text-center text-slate-900 mb-4" data-i18n="popup_title_password">번호 입력</h3>
                 <div id="password-display" class="w-full h-12 bg-slate-100 rounded-md flex items-center justify-center text-3xl tracking-[.2em] mb-4" style="font-family: 'Courier New', Courier, monospace;"></div>
                 <div class="grid grid-cols-3 gap-2">
                     <button class="keypad-btn" data-key="1">1</button>
@@ -199,38 +226,106 @@
                 </div>
             </div>
             <div class="bg-slate-50 px-4 py-3 flex justify-end space-x-2 rounded-b-lg">
-                 <button id="cancel-password-btn" class="px-4 py-2 bg-slate-200 text-sm font-medium text-slate-800 rounded-md hover:bg-slate-300">취소</button>
-                 <button id="confirm-password-btn" class="px-4 py-2 bg-blue-600 text-sm font-medium text-white rounded-md hover:bg-blue-700">확인</button>
+                 <button id="cancel-password-btn" class="px-4 py-2 bg-slate-200 text-sm font-medium text-slate-800 rounded-md hover:bg-slate-300" data-i18n="btn_cancel">취소</button>
+                 <button id="confirm-password-btn" class="px-4 py-2 bg-blue-600 text-sm font-medium text-white rounded-md hover:bg-blue-700" data-i18n="btn_confirm">확인</button>
             </div>
         </div>
     </div>
     
     <!-- 영문 자판기 팝업 -->
     <div id="keyboard-popup" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-2 hidden z-50">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-3xl p-4">
             <input type="text" id="keyboard-display" class="w-full h-12 border border-slate-300 rounded-md mb-4 text-xl px-3" />
             <div id="keyboard-container" class="space-y-2"></div>
             <div class="mt-4 flex justify-end">
-                <button id="keyboard-apply-btn" class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700">적용</button>
+                <button id="keyboard-apply-btn" class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700" data-i18n="btn_apply">적용</button>
             </div>
         </div>
     </div>
 
 
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
     <script>
         // 문서가 완전히 로드된 후 스크립트 실행
         $(document).ready(function() {
+            // AJAX 통신 오류 표시 등록
+            ajax.showError = showAppAjaxErrorPopup;
+            
+            // --- 다국어 지원(i18n) 데이터 ---
+            const i18n = {
+                ko: {
+                    dashboard_title: "대시보드",
+                    menu_action: "Action",
+                    menu_setup: "Setup",
+                    header_action_flow: "Action Flow",
+                    header_setup: "Setup",
+                    btn_resume: "RESUME",
+                    btn_cancel: "CANCEL",
+                    setup_title: "시스템 설정",
+                    setup_language: "언어",
+                    setup_radio_mode: "라디오 모드",
+                    setup_radio_manual: "수동",
+                    setup_radio_auto: "자동",
+                    setup_check_mode: "체크 모드",
+                    setup_test: "테스트",
+                    btn_trigger_error: "오류 발생시키기",
+                    btn_apply: "적용",
+                    placeholder_click_to_edit: "여기를 클릭하여 입력",
+                    popup_title_notification: "알림",
+                    popup_title_password: "번호 입력",
+                    btn_close: "닫기",
+                    btn_confirm: "확인",
+                    msg_waiting_for_job: "작업 대기중입니다.",
+                    msg_loading_job: "작업 목록을 불러오는 중...",
+                    msg_job_canceled: "작업이 사용자에 의해 취소되었습니다.",
+                    msg_test_error: "사용자 요청에 의해 생성된 테스트 오류입니다.",
+                    msg_wrong_password: "입력 번호가 올바르지 않습니다.",
+                    msg_unknown_error: "알 수 없는 오류가 발생했습니다.",
+                    msg_server_error: "서버와 통신 중 오류가 발생했습니다."
+                },
+                en: {
+                    dashboard_title: "Dashboard",
+                    menu_action: "Action",
+                    menu_setup: "Setup",
+                    header_action_flow: "Action Flow",
+                    header_setup: "Setup",
+                    btn_resume: "RESUME",
+                    btn_cancel: "CANCEL",
+                    setup_title: "System Settings",
+                    setup_language: "Language",
+                    setup_radio_mode: "Radio Mode",
+                    setup_radio_manual: "Manual",
+                    setup_radio_auto: "Auto",
+                    setup_check_mode: "Check Mode",
+                    setup_test: "Test",
+                    btn_trigger_error: "Trigger Error",
+                    btn_apply: "Apply",
+                    placeholder_click_to_edit: "Click here to edit",
+                    popup_title_notification: "Notification",
+                    popup_title_password: "Enter Number",
+                    btn_close: "Close",
+                    btn_confirm: "Confirm",
+                    msg_waiting_for_job: "Waiting for job.",
+                    msg_loading_job: "Loading job list...",
+                    msg_job_canceled: "The job has been canceled by the user.",
+                    msg_test_error: "This is a test error generated by user request.",
+                    msg_wrong_password: "The entered number is incorrect.",
+                    msg_unknown_error: "An unknown error has occurred.",
+                    msg_server_error: "An error occurred while communicating with the server."
+                }
+            };
+
             // --- 데이터 및 상태 변수 초기화 ---
             
             // Action 화면의 Flowchart를 구성하기 위한 목업(mock) 데이터
             const jobData = { "tasks": [ { "cancelable": true, "expectDuration": 10, "instant": false, "nextFail": "", "nextOk": "", "properties": "{\"position\":\"charger2\"}", "taskId": "undock.0000", "taskName": "__Self-Generated-Task", "taskType": "undock" }, { "cancelable": true, "expectDuration": 10, "instant": false, "nextFail": "", "nextOk": "", "properties": "{\"mapName\":\"SA_1_2\",\"position\":\"CAR2\",\"btName\":\"\"}", "taskId": "gotoposition.0000", "taskName": "Goto Source Position", "taskType": "gotoposition" }, { "cancelable": true, "expectDuration": 10, "instant": false, "nextFail": "", "nextOk": "", "properties": "{\"position\":\"CAR2\"}", "taskId": "tagdock.0000", "taskName": "docking for pickup to CAR2", "taskType": "tagdock" }, { "cancelable": false, "expectDuration": 10, "instant": false, "nextFail": "", "nextOk": "", "properties": "{\"position\":\"CAR2\",\"type\":\"conveyor\",\"locks\":\"CNV-240003.L2\",\"align\":\"other\",\"address\":\"10.203.22.176:5000\",\"timeout\":\"60\"}", "taskId": "loadconveyor.0000", "taskName": "load source conveyor", "taskType": "loadconveyor" }, { "cancelable": true, "expectDuration": 10, "instant": false, "nextFail": "", "nextOk": "", "properties": "{\"position\":\"CAR2\"}", "taskId": "undock.0000", "taskName": "undock from CAR2", "taskType": "undock" }, { "cancelable": true, "expectDuration": 10, "instant": false, "nextFail": "", "nextOk": "", "properties": "{\"mapName\":\"SA_1_2\",\"position\":\"PER3\",\"btName\":\"\"}", "taskId": "gotoposition.0001", "taskName": "Goto Destination Position", "taskType": "gotoposition" }, { "cancelable": true, "expectDuration": 10, "instant": false, "nextFail": "", "nextOk": "", "properties": "{\"position\":\"PER3\"}", "taskId": "tagdock.0001", "taskName": "docking to PER3", "taskType": "tagdock" }, { "cancelable": false, "expectDuration": 10, "instant": false, "nextFail": "", "nextOk": "", "properties": "{\"position\":\"PER3\",\"type\":\"piperack\",\"locks\":\"\",\"align\":\"\",\"address\":\"\",\"timeout\":\"60\"}", "taskId": "unloadpiperack.0000", "taskName": "unload to piperack", "taskType": "unloadconveyor" }, { "cancelable": true, "expectDuration": 10, "instant": false, "nextFail": "", "nextOk": "", "properties": "{\"position\":\"PER3\"}", "taskId": "undock.0001", "taskName": "undock from PER3", "taskType": "undock" } ] };
-            
-            let currentPassword = ''; // 비밀번호 팝업의 현재 입력값
-            let passwordContext = null; // 비밀번호 팝업의 호출 목적 (예: 'setup_auth')
-            let keyboardTarget = null; // 자판기 팝업이 값을 입력할 대상 input 요소
-            let keyboardView = 'alpha'; // 자판기 팝업의 현재 뷰 ('alpha' 또는 'symbols')
-            let isCaps = false; // 자판기 팝업의 Caps Lock 상태
-            let actionShouldSucceed = true; // Action 데이터 로딩 성공/실패 토글 (테스트용)
+            let currentLanguage = 'ko';
+            let currentPassword = '';
+            let passwordContext = null;
+            let keyboardTarget = null;
+            let keyboardView = 'alpha';
+            let isCaps = false;
+            let actionShouldSucceed = true;
 
             // --- 이벤트 리스너 등록 ---
 
@@ -253,47 +348,62 @@
                 showPasswordPopup('setup_auth'); // 바로 화면 전환 대신 비밀번호 팝업 호출
             });
             
+            $('#language-select').on('change', function() {
+                setLanguage($(this).val());
+            });
+
             // 오류 팝업 관련 이벤트
-            $('#close-popup-btn').on('click', hideErrorPopup); // 닫기 버튼
-            $('#error-popup').on('click', (e) => { if (e.target === e.currentTarget) hideErrorPopup(); }); // 팝업 바깥 영역 클릭
-            $('#cancel-job-btn').on('click', () => showErrorPopup("작업이 사용자에 의해 취소되었습니다.")); // Action 화면의 CANCEL 버튼
-            $('#trigger-error-btn').on('click', () => showErrorPopup("사용자 요청에 의해 생성된 테스트 오류입니다.")); // Setup 화면의 테스트 버튼
+            $('#close-popup-btn').on('click', hideErrorPopup);
+            $('#error-popup').on('click', (e) => { if (e.target === e.currentTarget) hideErrorPopup(); });
+            $('#cancel-job-btn').on('click', () => showErrorPopup(i18n[currentLanguage].msg_job_canceled));
+            $('#trigger-error-btn').on('click', () => showErrorPopup(i18n[currentLanguage].msg_test_error));
 
             // 비밀번호 팝업 관련 이벤트
-            $('#cancel-password-btn, #password-popup').on('click', (e) => { if (e.target === e.currentTarget || e.currentTarget.id === 'cancel-password-btn') hidePasswordPopup(); }); // 취소 버튼 또는 바깥 영역 클릭
-            $('#confirm-password-btn').on('click', handlePasswordConfirm); // 확인 버튼
+            $('#cancel-password-btn, #password-popup').on('click', (e) => { if (e.target === e.currentTarget || e.currentTarget.id === 'cancel-password-btn') hidePasswordPopup(); });
+            $('#confirm-password-btn').on('click', handlePasswordConfirm);
             $('.keypad-btn')
-                .on('mousedown touchstart', function() { $(this).addClass('bg-slate-400'); }) // 버튼 누를 때 색상 변경
-                .on('mouseup touchend mouseleave', function() { $(this).removeClass('bg-slate-400'); }) // 버튼에서 뗄 때 색상 복원
-                .on('click', handleKeypadInput); // 키패드 버튼 클릭
+                .on('mousedown touchstart', function() { $(this).addClass('bg-slate-400'); })
+                .on('mouseup touchend mouseleave', function() { $(this).removeClass('bg-slate-400'); })
+                .on('click', handleKeypadInput);
 
-            // 자판기 팝업 관련 이벤트
-            $('#navigate-topic-input').on('click', function() { showKeyboardPopup($(this)); }); // 입력란 클릭 시 자판기 표시
-            $('#keyboard-apply-btn').on('click', applyKeyboardInput); // 적용 버튼
+            $('#navigate-topic-input').on('click', function() { showKeyboardPopup($(this)); });
+            $('#keyboard-apply-btn').on('click', applyKeyboardInput);
             
             // --- 함수 정의 ---
 
             /**
-             * @name switchView
-             * @description Action 또는 Setup 화면으로 전환하는 함수
-             * @param {string} viewName - 전환할 화면 이름 ('action' 또는 'setup')
+             * @name setLanguage
+             * @description 페이지의 언어를 변경하고 UI 텍스트를 업데이트하는 함수
+             * @param {string} lang - 변경할 언어 코드 ('ko', 'en')
              */
+            function setLanguage(lang) {
+                currentLanguage = lang;
+                $('[data-i18n]').each(function() {
+                    const key = $(this).data('i18n');
+                    $(this).text(i18n[lang][key]);
+                });
+                $('[data-i18n-placeholder]').each(function() {
+                    const key = $(this).data('i18n-placeholder');
+                    $(this).attr('placeholder', i18n[lang][key]);
+                });
+                // 현재 화면의 제목을 다시 설정
+                const currentView = $('#action-content').is(':hidden') ? 'setup' : 'action';
+                const titleKey = currentView === 'action' ? 'header_action_flow' : 'header_setup';
+                $('#content-title').text(i18n[currentLanguage][titleKey]);
+            }
+
             function switchView(viewName) {
                 const isAction = viewName === 'action';
+                const titleKey = isAction ? 'header_action_flow' : 'header_setup';
+                $('#content-title').text(i18n[currentLanguage][titleKey]);
                 
-                // 헤더 제목 및 버튼 가시성 설정
-                $('#content-title').text(isAction ? 'Action Flow' : 'Setup');
-                $('#action-header-buttons').toggleClass('hidden', !isAction);
-
-                // 콘텐츠 영역 가시성 설정
                 $('#action-content').toggleClass('hidden', !isAction);
                 $('#setup-content').toggleClass('hidden', isAction);
+                $('#action-header-buttons').toggleClass('hidden', !isAction);
                 
-                // 좌측 메뉴 활성화 스타일 변경
                 $('#menu-action').toggleClass('menu-active text-white', isAction).toggleClass('menu-inactive', !isAction);
                 $('#menu-setup').toggleClass('menu-active text-white', !isAction).toggleClass('menu-inactive', isAction);
 
-                // Action 화면으로 전환 시 데이터 로드
                 if (isAction) {
                     fetchJobData();
                 }
@@ -304,49 +414,56 @@
              * @description AJAX를 통해 작업 데이터를 가져오는 것을 시뮬레이션하는 함수
              */
             function fetchJobData() {
+                const $actionContent = $('#action-content').html(`<p class="text-center text-slate-500">${i18n[currentLanguage].msg_loading_job}</p>`);
+
+                ajax.post("/v1/api/request", {command: "job"}, function(data){
+                    // data is null or {} or a filled json
+                    if (data && Object.keys(data).length !== 0 && data.tasks.length > 0) {
+                            renderFlowchart(data.tasks);
+                    } else {
+                        // 데이터가 없으면 "작업 대기중" 메시지를 작업상자 스타일로 표시
+                        const waitingBox = `
+                            <div class="flex justify-center items-center">
+                                <div class="bg-white border border-slate-200 shadow-lg rounded-xl p-4 w-full max-w-2xl flex items-center justify-center space-x-4">
+                                    <p class="text-slate-500 text-lg">${i18n[currentLanguage].msg_waiting_for_job}</p>
+                                </div>
+                            </div>`;
+                        $actionContent.html(waitingBox);
+                    }
+                });
+            }
+
+            function __fetchJobData() {
                 const $actionContent = $('#action-content').html('<p class="text-center text-slate-500">작업 목록을 불러오는 중...</p>');
-                
-                // Promise를 사용한 비동기 AJAX 요청 시뮬레이션
-                const mockAjax = new Promise((resolve, reject) => {
+
+                const mockAjax = new Promise((resolve) => {
                     setTimeout(() => {
-                        // 테스트를 위해 성공/실패 케이스를 번갈아 반환
                         if (actionShouldSucceed) {
-                            resolve({
-                                success: true,
-                                value: jobData,
-                                message: ""
-                            });
+                            resolve({ command: "job", success: true, value: jobData, message: "" });
                         } else {
-                            // 데이터가 null 또는 {} 인 경우 시뮬레이션
-                             resolve({
-                                success: true,
-                                value: null, // 또는 {}, 또는 { tasks: [] }
-                                message: ""
-                            });
+                             resolve({ command: "job", success: true, value: null, message: "" });
                         }
                     }, 500);
                 });
 
                 mockAjax.then(response => {
                     if (response.success) {
-                        // 응답값이 유효하고 tasks 배열이 존재하면 플로우차트 렌더링
                         if (response.value && response.value.tasks && response.value.tasks.length > 0) {
                             renderFlowchart(response.value.tasks);
                         } else {
-                            // 데이터가 없으면 "작업 대기중" 메시지를 작업상자 스타일로 표시
                             const waitingBox = `
                                 <div class="flex justify-center items-center">
                                     <div class="bg-white border border-slate-200 shadow-lg rounded-xl p-4 w-full max-w-2xl flex items-center justify-center space-x-4">
-                                        <p class="text-slate-500 text-lg">작업 대기중입니다.</p>
+                                        <p class="text-slate-500 text-lg">${i18n[currentLanguage].msg_waiting_for_job}</p>
                                     </div>
                                 </div>`;
                             $actionContent.html(waitingBox);
                         }
                     } else {
-                        showErrorPopup(response.message || "알 수 없는 오류가 발생했습니다.");
+                        showErrorPopup(response.message || i18n[currentLanguage].msg_unknown_error);
                     }
-                }).catch(error => {
-                     showErrorPopup("서버와 통신 중 오류가 발생했습니다.");
+                }).catch(() => {
+                     showErrorPopup(i18n[currentLanguage].msg_server_error);
                 });
             }
 
@@ -359,22 +476,30 @@
                 const $actionContent = $('#action-content').empty();
                 const $flowWrapper = $('<div class="flex flex-col items-center w-full"></div>').appendTo($actionContent);
                 tasks.forEach((task, index) => {
-                    // 작업상자 HTML 생성
                     $flowWrapper.append(`
                         <div class="bg-white border border-slate-200 shadow-lg rounded-xl p-4 w-full max-w-2xl flex items-center justify-between space-x-4 transform transition-transform hover:scale-105 mb-4">
                             <div class="flex-shrink-0 h-10 w-10 bg-slate-200 rounded-full flex items-center justify-center font-bold text-slate-600">${index + 1}</div>
                             <div class="flex-grow text-left"><p class="font-semibold text-slate-800 text-lg">${task.taskName}</p><p class="text-sm text-slate-500 mt-1">Type: ${task.taskType}</p></div>
                             <div class="flex-shrink-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2"><button class="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600">수정</button><button class="px-3 py-1 text-sm font-medium text-slate-700 bg-slate-200 rounded-md hover:bg-slate-300">삭제</button></div>
                         </div>`);
-                    // 마지막 작업상자가 아니면 화살표 추가
                     if (index < tasks.length - 1) {
-                        $flowWrapper.append('<div class="h-8 w-px bg-slate-300 my-0 relative"><div class="absolute bottom-0 left-1/2 -translate-x-1/2 border-x-8 border-x-transparent border-t-8 border-t-slate-400"></div></div>');
+                        $flowWrapper.append('<div class="h-12 w-px bg-slate-300 my-0 relative"><div class="absolute bottom-0 left-1/2 -translate-x-1/2 border-x-8 border-x-transparent border-t-8 border-t-slate-400"></div></div>');
                     }
                 });
             }
 
             // --- 팝업 관리 함수 ---
-            function showErrorPopup(message) { $('#error-message').text(message); $('#error-popup').removeClass('hidden'); }
+            // function showErrorPopup(message) { $('#error-message').text(message); $('#error-popup').removeClass('hidden'); }
+            function showErrorPopup(message) {
+                const formattedMessage = message.replace(/\n/g, '<br>');
+                //$('#error-message').text(message);
+                $('#error-message').html(formattedMessage);
+                $('#error-popup').removeClass('hidden'); 
+            }
+            function showAppAjaxErrorPopup(title, message) {
+                $('#error-title').text(title);
+                showErrorPopup(message);
+            }
             function hideErrorPopup() { $('#error-popup').addClass('hidden'); }
 
             function showPasswordPopup(context) {
@@ -395,7 +520,7 @@
                     if (currentPassword === '12345') {
                         switchView('setup');
                     } else {
-                        showErrorPopup('입력 번호가 올바르지 않습니다.');
+                        showErrorPopup(i18n[currentLanguage].msg_wrong_password);
                     }
                 }
                 hidePasswordPopup();
@@ -417,8 +542,8 @@
             function showKeyboardPopup(target) {
                 keyboardTarget = target;
                 $('#keyboard-display').val(keyboardTarget.val());
-                keyboardView = 'alpha'; // 초기 뷰는 알파벳
-                isCaps = false; // Caps Lock 초기화
+                keyboardView = 'alpha';
+                isCaps = false;
                 renderKeyboard();
                 $('#keyboard-popup').removeClass('hidden');
             }
@@ -470,7 +595,7 @@
                                 $keyBtn.css('max-width', '40%').text('Space');
                             }
                             if(key === 'shift' || key === 'caps') $keyBtn.text(key.charAt(0).toUpperCase() + key.slice(1));
-                            if(key === 'backspace') $keyBtn.html('&#9003;'); // Backspace icon
+                            if(key === 'backspace') $keyBtn.html('&#9003;');
                             if(key === '123' || key === 'abc') $keyBtn.text(key.toUpperCase());
                         }
 
@@ -504,7 +629,7 @@
                         isCaps = !isCaps;
                         renderKeyboard();
                         setTimeout(() => { 
-                            if (isCaps && key === 'shift') { // Only toggle back for momentary shift
+                            if (isCaps && key === 'shift') {
                                 isCaps = false;
                                 renderKeyboard();
                             }
@@ -533,8 +658,8 @@
             }
 
             // --- 초기화 ---
-            // 페이지 로드 시 Action 화면을 기본으로 표시
-            switchView('action');
+            setLanguage(currentLanguage); // 페이지 로드 시 기본 언어 적용
+            switchView('action'); // 페이지 로드 시 Action 화면을 기본으로 표시
         });
     </script>
 </body>
